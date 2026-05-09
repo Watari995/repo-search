@@ -22,7 +22,7 @@ export function ThemeToggle() {
       type="button"
       aria-label="Toggle color theme"
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className="hover:bg-neutral-muted text-fg-default focus-visible:outline-accent-fg inline-flex h-8 w-8 items-center justify-center rounded-md transition-colors focus-visible:outline-2"
+      className="inline-flex h-8 w-8 items-center justify-center rounded-md text-fg-default transition-colors hover:bg-neutral-muted focus-visible:outline-2 focus-visible:outline-accent-fg"
     >
       <SunIcon size={16} className="hidden dark:inline" aria-hidden />
       <MoonIcon size={16} className="inline dark:hidden" aria-hidden />

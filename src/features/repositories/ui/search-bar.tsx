@@ -58,7 +58,7 @@ export function SearchBar() {
       <label htmlFor="repo-search-input" className="sr-only">
         Search repositories
       </label>
-      <div className="border-border-default focus-within:border-accent-fg focus-within:ring-accent-fg/30 bg-canvas-subtle text-fg-default flex flex-1 items-center gap-2 rounded-md border px-3 py-1.5 transition focus-within:ring-2">
+      <div className="flex flex-1 items-center gap-2 rounded-md border border-border-default bg-canvas-subtle px-3 py-1.5 text-fg-default transition focus-within:border-accent-fg focus-within:ring-2 focus-within:ring-accent-fg/30">
         <SearchIcon size={16} className="text-fg-muted" />
         <input
           id="repo-search-input"
@@ -70,13 +70,13 @@ export function SearchBar() {
           placeholder="Search repositories..."
           value={value}
           onChange={(event) => setValue(event.target.value)}
-          className="placeholder:text-fg-subtle flex-1 bg-transparent text-sm outline-none"
+          className="flex-1 bg-transparent text-sm outline-none placeholder:text-fg-subtle"
         />
       </div>
       <button
         type="submit"
         disabled={isPending}
-        className="bg-success-fg hover:bg-success-fg/90 text-fg-on-emphasis focus-visible:outline-accent-fg inline-flex h-8 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors focus-visible:outline-2 disabled:opacity-60"
+        className="inline-flex h-8 items-center justify-center rounded-md bg-success-fg px-4 text-sm font-medium text-fg-on-emphasis transition-colors hover:bg-success-fg/90 focus-visible:outline-2 focus-visible:outline-accent-fg disabled:opacity-60"
       >
         Search
       </button>

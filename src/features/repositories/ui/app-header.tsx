@@ -14,11 +14,11 @@ import { SearchBar } from "./search-bar";
  */
 export function AppHeader() {
   return (
-    <header className="border-border-default bg-canvas-default/80 sticky top-0 z-40 border-b backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-border-default bg-canvas-default/80 backdrop-blur">
       <div className="mx-auto flex w-full max-w-5xl items-center gap-3 px-4 py-3">
         <Link
           href="/repositories"
-          className="text-fg-default hover:text-accent-fg flex items-center gap-2 text-sm font-semibold transition-colors"
+          className="flex items-center gap-2 text-sm font-semibold text-fg-default transition-colors hover:text-accent-fg"
         >
           <MarkGithubIcon size={28} />
           <span>repo-search</span>

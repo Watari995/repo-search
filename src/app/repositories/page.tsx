@@ -1,12 +1,41 @@
+import { searchRepositories } from "@/features/repositories/data/search-repositories";
+import { parseSearchQuery } from "@/features/repositories/domain/search-query";
+import { EmptyState } from "@/features/repositories/ui/empty-state";
+import { RepositoryList } from "@/features/repositories/ui/repository-list";
+
 /**
- * 検索結果一覧ページのスタブ実装。
- * Phase 2 (Commit 9) で Server Component として GitHub Search API を叩き、
- * 結果カードを並べる本実装に差し替える。
+ * 検索結果一覧 (Server Component)。
+ *
+ * Next.js v15+ では `searchParams` が `Promise<...>` 型 (Async Request APIs)。
+ * await してから使う。`PageProps<'/repositories'>` は next typegen が生成する
+ * グローバルヘルパーで、URL リテラルから params/searchParams を厳密に型付けする。
+ *
+ * 設計のポイント:
+ *   - URL の searchParams を SearchQuery に正規化するのは domain 側の責務。
+ *     ここは「URL → use case → UI」の配線だけに留めて 20 行前後で収める。
+ *   - 空クエリ時は API を叩かない。「初期表示」と「0 件ヒット」も別 UI に分岐。
+ *   - データ層から伝播する例外 (RateLimitError 等) は `error.tsx` で受ける。
  */
-export default function Page() {
+export default async function Page(props: PageProps<"/repositories">) {
+  const searchParams = await props.searchParams;
+  const query = parseSearchQuery(searchParams);
+
+  if (query.isEmpty) {
+    return <EmptyState mode="initial" />;
+  }
+
+  const result = await searchRepositories(query);
+
+  if (result.totalCount === 0) {
+    return <EmptyState mode="not-found" query={query.q} />;
+  }
+
   return (
-    <div className="text-fg-muted py-12 text-center text-sm">
-      上の検索バーからリポジトリを探してください。
-    </div>
+    <section className="flex flex-col gap-4">
+      <p className="text-fg-muted text-sm" aria-live="polite">
+        {result.totalCount.toLocaleString("en-US")} repository results
+      </p>
+      <RepositoryList items={result.items} />
+    </section>
   );
 }
