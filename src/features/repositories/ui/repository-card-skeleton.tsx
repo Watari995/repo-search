@@ -6,7 +6,7 @@ import { Skeleton } from "@/shared/ui/skeleton";
  */
 export function RepositoryCardSkeleton() {
   return (
-    <div className="border-border-muted bg-canvas-default rounded-md border p-4">
+    <div className="rounded-md border border-border-muted bg-canvas-default p-4">
       <div className="flex items-start gap-3">
         <Skeleton className="h-10 w-10 rounded-full" />
         <div className="min-w-0 flex-1 space-y-2">

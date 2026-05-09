@@ -15,17 +15,17 @@ export function RateLimitNotice({ minutesUntilReset }: { minutesUntilReset: numb
   return (
     <div
       role="status"
-      className="border-attention-fg/40 bg-canvas-subtle flex flex-col items-center gap-3 rounded-md border p-8 text-center"
+      className="flex flex-col items-center gap-3 rounded-md border border-attention-fg/40 bg-canvas-subtle p-8 text-center"
     >
       <ClockIcon size={32} className="text-attention-fg" aria-hidden />
-      <h2 className="text-fg-default text-lg font-semibold">Rate limit reached</h2>
-      <p className="text-fg-muted max-w-md text-sm">
+      <h2 className="text-lg font-semibold text-fg-default">Rate limit reached</h2>
+      <p className="max-w-md text-sm text-fg-muted">
         GitHub API のレート制限に達しました。
         {minutesUntilReset !== null && minutesUntilReset > 0
           ? ` 約 ${minutesUntilReset} 分後に再試行できます。`
           : " しばらく待ってから再試行してください。"}
       </p>
-      <p className="text-fg-subtle text-xs">
+      <p className="text-xs text-fg-subtle">
         環境変数 <code className="font-mono">GITHUB_TOKEN</code> を設定すると 5000 req/h
         まで緩和できます。
       </p>

@@ -10,7 +10,7 @@ import { RepositoryCardSkeleton } from "@/features/repositories/ui/repository-ca
 export default function Loading() {
   return (
     <section className="flex flex-col gap-4" aria-busy="true" aria-live="polite">
-      <div className="bg-neutral-muted h-4 w-48 animate-pulse rounded" aria-hidden />
+      <div className="h-4 w-48 animate-pulse rounded bg-neutral-muted" aria-hidden />
       <ul className="flex flex-col gap-3">
         {Array.from({ length: 5 }).map((_, index) => (
           // index を key にしているのは、骨組みの並び順そのものに意味がないため

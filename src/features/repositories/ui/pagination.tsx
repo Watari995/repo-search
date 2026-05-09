@@ -155,7 +155,11 @@ export function buildPageItems(currentPage: number, totalPages: number): PageIte
   const result: PageItem[] = [];
   let prev = 0;
   for (const page of sorted) {
-    if (page > prev + 1) {
+    if (page === prev + 2) {
+      // 1 ページだけの隙間なら ellipsis ではなくその数字で埋める
+      // (例: [1, 2, 3, *, 5] → [1, 2, 3, 4, 5])
+      result.push(prev + 1);
+    } else if (page > prev + 2) {
       result.push("ellipsis");
     }
     result.push(page);
