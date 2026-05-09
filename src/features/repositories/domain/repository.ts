@@ -30,3 +30,13 @@ export type Repository = {
   /** ISO8601。最終更新日時 */
   updatedAt: string;
 };
+
+/**
+ * 詳細ページ用に「Watcher 数」を加えた型。
+ *
+ * Watcher 数の意味は GitHub API の罠を踏みやすい箇所。詳細は
+ * `normalize.ts` の `toRepositoryDetail` のコメント参照。
+ */
+export type RepositoryDetail = Repository & {
+  watchersCount: number;
+};

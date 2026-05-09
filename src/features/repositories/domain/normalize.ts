@@ -1,4 +1,4 @@
-import type { Repository } from "./repository";
+import type { Repository, RepositoryDetail } from "./repository";
 
 /**
  * GitHub Search API の検索結果アイテム (使うフィールドのみ宣言)。
@@ -46,5 +46,27 @@ export function toRepository(raw: GitHubSearchRepoItem): Repository {
     openIssuesCount: raw.open_issues_count,
     htmlUrl: raw.html_url,
     updatedAt: raw.updated_at,
+  };
+}
+
+/**
+ * `/repos/{owner}/{repo}` のレスポンス。
+ * 詳細ページで必要なフィールドだけ宣言する。
+ */
+export type GitHubRepoFull = GitHubSearchRepoItem & {
+  watchers_count: number;
+  subscribers_count: number;
+};
+
+/**
+ * リポジトリ詳細を `RepositoryDetail` DTO に正規化する。
+ *
+ * 単純に Repository に watchersCount を足しているだけ。
+ * watchers_count フィールドをそのまま使う。
+ */
+export function toRepositoryDetail(raw: GitHubRepoFull): RepositoryDetail {
+  return {
+    ...toRepository(raw),
+    watchersCount: raw.watchers_count,
   };
 }
