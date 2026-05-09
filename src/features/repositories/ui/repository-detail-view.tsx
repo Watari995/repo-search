@@ -24,7 +24,7 @@ export function RepositoryDetailView({ detail }: { detail: RepositoryDetail }) {
     <article className="flex flex-col gap-6">
       <Link
         href="/repositories"
-        className="text-fg-muted hover:text-accent-fg inline-flex w-fit items-center gap-1 text-sm transition-colors"
+        className="inline-flex w-fit items-center gap-1 text-sm text-fg-muted transition-colors hover:text-accent-fg"
       >
         <ArrowLeftIcon size={14} aria-hidden />
         Back to results
@@ -36,19 +36,16 @@ export function RepositoryDetailView({ detail }: { detail: RepositoryDetail }) {
           alt=""
           width={64}
           height={64}
-          className="border-border-muted rounded-full border"
+          className="rounded-full border border-border-muted"
         />
         <div className="min-w-0 flex-1">
-          <h1 className="text-fg-default text-2xl font-semibold leading-tight break-all">
-            <span className="text-fg-muted font-normal">{detail.owner.login}/</span>
+          <h1 className="text-2xl leading-tight font-semibold break-all text-fg-default">
+            <span className="font-normal text-fg-muted">{detail.owner.login}/</span>
             <span>{detail.name}</span>
           </h1>
           {detail.language && (
-            <p className="text-fg-muted mt-1 inline-flex items-center gap-1.5 text-sm">
-              <span
-                className="bg-accent-emphasis inline-block h-3 w-3 rounded-full"
-                aria-hidden
-              />
+            <p className="mt-1 inline-flex items-center gap-1.5 text-sm text-fg-muted">
+              <span className="inline-block h-3 w-3 rounded-full bg-accent-emphasis" aria-hidden />
               {detail.language}
             </p>
           )}
@@ -56,7 +53,7 @@ export function RepositoryDetailView({ detail }: { detail: RepositoryDetail }) {
       </header>
 
       {detail.description && (
-        <p className="text-fg-default text-base leading-relaxed">{detail.description}</p>
+        <p className="text-base leading-relaxed text-fg-default">{detail.description}</p>
       )}
 
       <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -86,7 +83,7 @@ export function RepositoryDetailView({ detail }: { detail: RepositoryDetail }) {
         href={detail.htmlUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="border-border-default text-fg-default hover:bg-neutral-muted focus-visible:outline-accent-fg inline-flex w-fit items-center gap-2 rounded-md border px-4 py-1.5 text-sm font-medium transition-colors focus-visible:outline-2"
+        className="inline-flex w-fit items-center gap-2 rounded-md border border-border-default px-4 py-1.5 text-sm font-medium text-fg-default transition-colors hover:bg-neutral-muted focus-visible:outline-2 focus-visible:outline-accent-fg"
       >
         View on GitHub
         <LinkExternalIcon size={14} aria-hidden />
@@ -95,24 +92,16 @@ export function RepositoryDetailView({ detail }: { detail: RepositoryDetail }) {
   );
 }
 
-function StatCard({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: number;
-}) {
+function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: number }) {
   return (
-    <div className="border-border-muted bg-canvas-default rounded-md border p-4">
-      <dt className="text-fg-muted flex items-center gap-1.5 text-xs uppercase tracking-wider">
+    <div className="rounded-md border border-border-muted bg-canvas-default p-4">
+      <dt className="flex items-center gap-1.5 text-xs tracking-wider text-fg-muted uppercase">
         {icon}
         {label}
       </dt>
-      <dd className="text-fg-default mt-2 text-2xl font-semibold">
+      <dd className="mt-2 text-2xl font-semibold text-fg-default">
         {formatCompactNumber(value)}
-        <span className="text-fg-subtle ml-1 text-xs font-normal">
+        <span className="ml-1 text-xs font-normal text-fg-subtle">
           ({value.toLocaleString("en-US")})
         </span>
       </dd>
