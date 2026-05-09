@@ -7,6 +7,7 @@ import {
 } from "@primer/octicons-react";
 import Image from "next/image";
 import { formatCompactNumber } from "@/shared/lib/format-number";
+import { getLanguageColor } from "@/shared/lib/language-colors";
 import type { RepositoryDetail } from "../domain/repository";
 import { BackToResults } from "./back-to-results";
 
@@ -37,8 +38,12 @@ export function RepositoryDetailView({ detail }: { detail: RepositoryDetail }) {
             <span>{detail.name}</span>
           </h1>
           {detail.language && (
-            <p className="mt-1 inline-flex items-center gap-1.5 text-sm text-fg-muted">
-              <span className="inline-block h-3 w-3 rounded-full bg-accent-emphasis" aria-hidden />
+            <p className="text-fg-muted mt-1 inline-flex items-center gap-1.5 text-sm">
+              <span
+                className="inline-block h-3 w-3 rounded-full"
+                style={{ backgroundColor: getLanguageColor(detail.language) }}
+                aria-hidden
+              />
               {detail.language}
             </p>
           )}
