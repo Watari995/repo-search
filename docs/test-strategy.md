@@ -2,7 +2,7 @@
 
 このドキュメントは、本リポジトリ (GitHub Repository Search / Next.js 16) の **テスト方針** と **その判断根拠** をまとめたものです。
 要件として「広く深くテストすればよいのではなく、重点を絞り戦略にこだわる」とあったため、
-*何を* テストし *何を* テストしないか、そして *なぜ* その判断をしたかを言語化することを最優先しています。
+_何を_ テストし _何を_ テストしないか、そして _なぜ_ その判断をしたかを言語化することを最優先しています。
 
 ---
 
@@ -17,7 +17,7 @@
    後者を優先して防衛する。
 2. **ドメイン知識を反映するテストを書く**
    GitHub API の `watchers_count` と `subscribers_count` の取り違えのような、
-   *知っていなければ書けない* テストこそ評価に値する。
+   _知っていなければ書けない_ テストこそ評価に値する。
 3. **フレームワークではなく自分のコードをテストする**
    Next.js / React / GitHub API そのものの挙動は外部チームが守っている。
    私が書いたコードのうち「私の判断が入った箇所」だけをテスト対象にする。
@@ -26,11 +26,11 @@
 
 ## 2. テストピラミッド
 
-| 層 | ツール | 比率の目安 | 件数 |
-|---|---|---:|---:|
-| Unit (純関数) | Vitest | 70% | 28 件前後 |
-| Component / Integration (RTL + MSW) | Vitest | 25% | 14 件前後 |
-| E2E (実ブラウザ + 実 GitHub API) | Playwright | 5% | 1 件 |
+| 層                                  | ツール     | 比率の目安 |      件数 |
+| ----------------------------------- | ---------- | ---------: | --------: |
+| Unit (純関数)                       | Vitest     |        70% | 28 件前後 |
+| Component / Integration (RTL + MSW) | Vitest     |        25% | 14 件前後 |
+| E2E (実ブラウザ + 実 GitHub API)    | Playwright |         5% |      1 件 |
 
 ### この配分にした理由
 
@@ -52,6 +52,7 @@
 
 **テスト**:
 `src/features/repositories/domain/normalize.test.ts` の最重要ブロック。
+
 - `watchers_count: 230_000` & `subscribers_count: 6_500` を入れ、出力 `watchersCount` が `6_500` であることを表明
 - `subscribers_count: 0` のフォールバックも保証 (0 だからといって watchers に戻したりしない)
 - `getRepository` 結合テストでも、API レスポンスから DTO まで一貫することを別途表明
@@ -61,6 +62,7 @@
 ### GitHub API クライアントのエラーハンドリング (重点)
 
 `src/features/repositories/data/github-client.test.ts` (8 件)。
+
 - 200 / 401 / 404 / 422 のドメイン例外マッピング
 - 429 と「403 + `X-RateLimit-Remaining: 0`」を **両方とも** `RateLimitError` として扱うこと
 - 「403 (rate limit ヘッダなし)」だけは基底 `GitHubApiError` として扱うこと (権限エラーの可能性)
@@ -100,32 +102,32 @@
 
 ## 4. テストしないエリアと理由
 
-| 対象 | 理由 |
-|---|---|
-| Next.js のレンダリング機構自体 | フレームワークのテストになる |
-| React の hooks の挙動 | 同上 |
-| GitHub API のレスポンス形式そのもの | 外部 API の契約はこちらで担保しない |
-| CSS / Tailwind の見た目 | snapshot は保守コストが効果に見合わない。試験範囲外 |
-| `next/link` などの内部 navigation | フレームワーク提供物 |
-| ビジュアルリグレッション | 試験範囲外 (拡張時は Chromatic 等) |
-| ブラウザ互換性 | 同上 |
-| パフォーマンス計測 | Vercel Analytics / Lighthouse の範疇 |
-| Server Component の **直接レンダーテスト** | 公式が推奨しない (後述) |
-| 検索結果一覧の `map` レンダー | フレームワーク機能。E2E + RepositoryCard の単独表示で十分 |
-| ローディング状態 UI | `loading.tsx` は Next.js 機能。E2E のスモークで副次的に検証 |
+| 対象                                       | 理由                                                        |
+| ------------------------------------------ | ----------------------------------------------------------- |
+| Next.js のレンダリング機構自体             | フレームワークのテストになる                                |
+| React の hooks の挙動                      | 同上                                                        |
+| GitHub API のレスポンス形式そのもの        | 外部 API の契約はこちらで担保しない                         |
+| CSS / Tailwind の見た目                    | snapshot は保守コストが効果に見合わない。試験範囲外         |
+| `next/link` などの内部 navigation          | フレームワーク提供物                                        |
+| ビジュアルリグレッション                   | 試験範囲外 (拡張時は Chromatic 等)                          |
+| ブラウザ互換性                             | 同上                                                        |
+| パフォーマンス計測                         | Vercel Analytics / Lighthouse の範疇                        |
+| Server Component の **直接レンダーテスト** | 公式が推奨しない (後述)                                     |
+| 検索結果一覧の `map` レンダー              | フレームワーク機能。E2E + RepositoryCard の単独表示で十分   |
+| ローディング状態 UI                        | `loading.tsx` は Next.js 機能。E2E のスモークで副次的に検証 |
 
 ---
 
 ## 5. ツール選定
 
-| 選定 | 採用 | 理由 |
-|---|---|---|
-| **Vitest** vs Jest | Vitest 3.2.4 | Next.js v16 + ESM 時代では Vite ベースの Vitest が事実上の標準。Jest は ESM 周りの設定が多い。`@vitest/coverage-v8` も標準で整っている |
-| **happy-dom** vs jsdom | happy-dom | Node 24 の最新で jsdom 29 のいくつかの依存に ESM 互換問題があったため。RTL は両方対応 |
-| React Testing Library + jest-dom | 採用 | DOM/コンポーネントテストの de facto。実装詳細でなくユーザ視点で書ける |
-| **Playwright** vs Cypress | Playwright 1.59 | Microsoft 製で Next.js との親和性が高い。並列実行・自動待機・CI 親和性で Cypress より優位。本リポジトリでは 1 本しか書かないが、選定理由として説明できる |
-| **MSW** vs `vi.mock` | 両方を使い分け | API クライアントは MSW (HTTP 層 interception で本物に近い)。コンポーネントから API 関数をモックするときは vi.mock |
-| Vitest config 拡張子 | `.mts` | Node 24 + Vite 7+ + Vitest 3 の組み合わせで `.ts` だと `require(ESM)` パスを通って ERR_REQUIRE_ESM が出るため、ESM ローダ確定の `.mts` を使用 |
+| 選定                             | 採用            | 理由                                                                                                                                                     |
+| -------------------------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Vitest** vs Jest               | Vitest 3.2.4    | Next.js v16 + ESM 時代では Vite ベースの Vitest が事実上の標準。Jest は ESM 周りの設定が多い。`@vitest/coverage-v8` も標準で整っている                   |
+| **happy-dom** vs jsdom           | happy-dom       | Node 24 の最新で jsdom 29 のいくつかの依存に ESM 互換問題があったため。RTL は両方対応                                                                    |
+| React Testing Library + jest-dom | 採用            | DOM/コンポーネントテストの de facto。実装詳細でなくユーザ視点で書ける                                                                                    |
+| **Playwright** vs Cypress        | Playwright 1.59 | Microsoft 製で Next.js との親和性が高い。並列実行・自動待機・CI 親和性で Cypress より優位。本リポジトリでは 1 本しか書かないが、選定理由として説明できる |
+| **MSW** vs `vi.mock`             | 両方を使い分け  | API クライアントは MSW (HTTP 層 interception で本物に近い)。コンポーネントから API 関数をモックするときは vi.mock                                        |
+| Vitest config 拡張子             | `.mts`          | Node 24 + Vite 7+ + Vitest 3 の組み合わせで `.ts` だと `require(ESM)` パスを通って ERR_REQUIRE_ESM が出るため、ESM ローダ確定の `.mts` を使用            |
 
 ### 設定上のひっかかり
 
@@ -147,6 +149,7 @@ Next.js 公式は Server Component の直接レンダーテストを **推奨し
 (テスト用に React の RSC ランタイムを自前で用意することになるため、保守コストが見合わない)。
 
 代わりに、Server Component の中身を **純関数として切り出して** 単体テストでカバーします:
+
 - データ整形 → `domain/normalize.ts`
 - URL パース → `domain/search-query.ts`
 - 認証判定 → `shared/auth/basic-auth.ts`
@@ -233,13 +236,13 @@ PR では失敗時に Playwright report を artifact 保存します。
 
 ## 9. 拡張する場合の方針
 
-| 拡張 | アプローチ |
-|---|---|
-| ビジュアルリグレッション | Storybook + Chromatic を別ジョブで追加。本ドキュメントでは試験範囲外として除外 |
-| 契約テスト (GitHub API スキーマ drift 検知) | `@octokit/openapi-types` の最新と DTO の付き合わせを CI に挟む。年 1 回回せば十分 |
-| アクセシビリティ自動検査 | axe-core をコンポーネントテストに混ぜる。RepositoryCard / Pagination から開始 |
-| 国際化対応時 | i18n キーの未訳検出を typecheck に組み込む。Snapshot 化はしない |
-| 認証を本番化する場合 | NextAuth.js + IdP (GitHub OAuth等) に置き換え。proxy.ts は薄いので差し替えは部分的で済む |
+| 拡張                                        | アプローチ                                                                               |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| ビジュアルリグレッション                    | Storybook + Chromatic を別ジョブで追加。本ドキュメントでは試験範囲外として除外           |
+| 契約テスト (GitHub API スキーマ drift 検知) | `@octokit/openapi-types` の最新と DTO の付き合わせを CI に挟む。年 1 回回せば十分        |
+| アクセシビリティ自動検査                    | axe-core をコンポーネントテストに混ぜる。RepositoryCard / Pagination から開始            |
+| 国際化対応時                                | i18n キーの未訳検出を typecheck に組み込む。Snapshot 化はしない                          |
+| 認証を本番化する場合                        | NextAuth.js + IdP (GitHub OAuth等) に置き換え。proxy.ts は薄いので差し替えは部分的で済む |
 
 ---
 
@@ -248,6 +251,7 @@ PR では失敗時に Playwright report を artifact 保存します。
 ### 10.1 watcher_count vs subscribers_count
 
 GitHub Docs 抜粋:
+
 > `watchers_count` is intentionally returned to maintain backward compatibility with v3.
 
 つまり `watchers_count` は **後方互換のために** 残されているフィールドで、**実態は star 数**。
@@ -255,15 +259,16 @@ GitHub Docs 抜粋:
 リポジトリページの "Watch" ボタンが操作するのもこちら。
 
 参考リンク:
+
 - https://docs.github.com/en/rest/repos/repos#get-a-repository
 - https://github.com/orgs/community/discussions/24795
 
 ### 10.2 GitHub Search API のレート制限
 
-| 認証状態 | 全体 | Search エンドポイント |
-|---|---:|---:|
-| 未認証 | 60 req/h | 10 req/min |
-| 認証付 (PAT) | 5000 req/h | 30 req/min |
+| 認証状態     |       全体 | Search エンドポイント |
+| ------------ | ---------: | --------------------: |
+| 未認証       |   60 req/h |            10 req/min |
+| 認証付 (PAT) | 5000 req/h |            30 req/min |
 
 本アプリは `revalidate: 60` で同一クエリのキャッシュ再利用を期待し、Vercel での実運用では 5000 req/h の中で十分回ります。
 鍵は `GITHUB_TOKEN` を Vercel env に設定すること。
