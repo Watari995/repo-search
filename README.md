@@ -26,8 +26,14 @@ GitHub Search API を用いた **リポジトリ検索 Web アプリ**。
 
 ## デモ
 
-- **URL**: TBD (Vercel デプロイ後にここへ追記)
-- **認証**: TBD (デプロイ完了後に提示)
+- **URL**: <https://repo-search-xi.vercel.app>
+- **Basic Auth**:
+  - User: `demo`
+  - Password: `BhjbmDJ1LC4axga4`
+- **ヘルスチェック**: <https://repo-search-xi.vercel.app/api/health> (認証バイパス)
+
+> 注: デモ認証情報は本リポジトリの公開時のものです。
+> 必要に応じて Vercel ダッシュボードからローテーションしてください。
 
 ---
 
