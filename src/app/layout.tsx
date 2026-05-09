@@ -34,7 +34,9 @@ export const metadata: Metadata = {
     template: "%s · repo-search",
   },
   description: "Search GitHub repositories with a Next.js 16 App Router demo.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  // `||` で空文字も localhost にフォールバック (`??` は null/undefined しか拾えない)。
+  // 空文字を渡すと `new URL("")` が ERR_INVALID_URL を投げてビルドが落ちる。
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
