@@ -1,5 +1,4 @@
 import {
-  ArrowLeftIcon,
   EyeIcon,
   IssueOpenedIcon,
   LinkExternalIcon,
@@ -7,9 +6,9 @@ import {
   StarIcon,
 } from "@primer/octicons-react";
 import Image from "next/image";
-import Link from "next/link";
 import { formatCompactNumber } from "@/shared/lib/format-number";
 import type { RepositoryDetail } from "../domain/repository";
+import { BackToResults } from "./back-to-results";
 
 /**
  * リポジトリ詳細ページの本体 UI。
@@ -22,13 +21,7 @@ import type { RepositoryDetail } from "../domain/repository";
 export function RepositoryDetailView({ detail }: { detail: RepositoryDetail }) {
   return (
     <article className="flex flex-col gap-6">
-      <Link
-        href="/repositories"
-        className="inline-flex w-fit items-center gap-1 text-sm text-fg-muted transition-colors hover:text-accent-fg"
-      >
-        <ArrowLeftIcon size={14} aria-hidden />
-        Back to results
-      </Link>
+      <BackToResults />
 
       <header className="flex items-start gap-4">
         <Image

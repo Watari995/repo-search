@@ -9,17 +9,31 @@ import { z } from "zod";
  *   ランタイムエラーを起動時の明示的なエラーに格上げする (fail-fast)。
  * - `'server-only'` を import しているため、誤ってクライアントから import すると
  *   ビルド時に弾かれる。秘密値漏洩の保険。
+ *
+ * 空文字 ("") は「未設定」として扱う:
+ *   - シェルや CI / Vercel では「変数を空に上書き = 無効化」のニュアンスが多い
+ *   - z.string().min(1).optional() だけだと "" は rejected されるため、
+ *     preprocess で undefined に潰す
  */
+const optionalString = (min = 1) =>
+  z.preprocess(
+    (value) => (value === "" || value === undefined ? undefined : value),
+    z.string().min(min).optional(),
+  );
+
 const envSchema = z.object({
   /** GitHub API のレート制限緩和用 PAT。未設定でも動くがレート制限に当たりやすい。 */
-  GITHUB_TOKEN: z.string().min(1).optional(),
+  GITHUB_TOKEN: optionalString(),
 
   /** Basic Auth の credential。両方揃った場合のみ認証ゲートが有効化される。 */
-  BASIC_AUTH_USER: z.string().min(1).optional(),
-  BASIC_AUTH_PASSWORD: z.string().min(8).optional(),
+  BASIC_AUTH_USER: optionalString(),
+  BASIC_AUTH_PASSWORD: optionalString(8),
 
   /** メタデータの絶対 URL 解決用。Vercel デプロイ時に設定する。 */
-  NEXT_PUBLIC_SITE_URL: z.url().optional(),
+  NEXT_PUBLIC_SITE_URL: z.preprocess(
+    (value) => (value === "" || value === undefined ? undefined : value),
+    z.url().optional(),
+  ),
 });
 
 const parsed = envSchema.safeParse(process.env);
