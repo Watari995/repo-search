@@ -1,6 +1,6 @@
 # repo-search
 
-[![CI](https://img.shields.io/badge/CI-GitHub%20Actions-blue)](.github/workflows/ci.yml)
+[![CI](https://github.com/Watari995/repo-search/actions/workflows/ci.yml/badge.svg)](https://github.com/Watari995/repo-search/actions/workflows/ci.yml)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6)](tsconfig.json)
 [![Tests](https://img.shields.io/badge/tests-56%20passing-success)](docs/test-strategy.md)

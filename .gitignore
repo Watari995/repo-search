@@ -48,6 +48,9 @@ next-env.d.ts
 # 公開しないので gitignore に入れる
 /.docs
 
+# AI ツールのセッション情報
+/.claude
+
 # editor
 .idea
 .vscode
