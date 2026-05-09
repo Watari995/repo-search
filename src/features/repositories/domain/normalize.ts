@@ -61,12 +61,25 @@ export type GitHubRepoFull = GitHubSearchRepoItem & {
 /**
  * リポジトリ詳細を `RepositoryDetail` DTO に正規化する。
  *
- * 単純に Repository に watchersCount を足しているだけ。
- * watchers_count フィールドをそのまま使う。
+ * ★ GitHub REST API の落とし穴 ★
+ * --------------------------------------------------------------
+ * GET /repos/{owner}/{repo} のレスポンスにある `watchers_count` は、
+ * 歴史的経緯から「実態として stargazers_count と同じ値」を返す。
+ * 本来の意味の Watcher 数 (= リポジトリを Subscribe している人数) は
+ * `subscribers_count` フィールドに格納されている。
+ *
+ * UI で「Watchers」と表示する以上、ユーザの直感に合うのは subscribers_count。
+ * したがってここで詰め替えの段階で **subscribers_count を採用** する。
+ *
+ * 参照:
+ *   - https://docs.github.com/en/rest/repos/repos#get-a-repository
+ *   - https://github.com/orgs/community/discussions/24795
+ * --------------------------------------------------------------
  */
 export function toRepositoryDetail(raw: GitHubRepoFull): RepositoryDetail {
   return {
     ...toRepository(raw),
-    watchersCount: raw.watchers_count,
+    // raw.watchers_count は使わない (= stars と同値の罠)。
+    watchersCount: raw.subscribers_count,
   };
 }
