@@ -42,20 +42,12 @@ export function Pagination({
       <ol className="flex items-center gap-1" aria-label="Page list">
         {items.map((item, index) =>
           item === "ellipsis" ? (
-            <li
-              key={`ellipsis-${index}`}
-              aria-hidden
-              className="text-fg-subtle px-2 text-sm"
-            >
+            <li key={`ellipsis-${index}`} aria-hidden className="px-2 text-sm text-fg-subtle">
               …
             </li>
           ) : (
             <li key={item}>
-              <PageLink
-                page={item}
-                href={buildHref(q, item)}
-                isCurrent={item === currentPage}
-              />
+              <PageLink page={item} href={buildHref(q, item)} isCurrent={item === currentPage} />
             </li>
           ),
         )}
@@ -72,20 +64,12 @@ export function Pagination({
   );
 }
 
-function PageLink({
-  page,
-  href,
-  isCurrent,
-}: {
-  page: number;
-  href: string;
-  isCurrent: boolean;
-}) {
+function PageLink({ page, href, isCurrent }: { page: number; href: string; isCurrent: boolean }) {
   if (isCurrent) {
     return (
       <span
         aria-current="page"
-        className="bg-accent-emphasis text-fg-on-emphasis inline-flex h-8 min-w-8 items-center justify-center rounded-md px-2 text-sm font-medium"
+        className="inline-flex h-8 min-w-8 items-center justify-center rounded-md bg-accent-emphasis px-2 text-sm font-medium text-fg-on-emphasis"
       >
         {page}
       </span>
@@ -94,7 +78,7 @@ function PageLink({
   return (
     <Link
       href={href}
-      className="text-fg-default hover:bg-neutral-muted border-border-muted inline-flex h-8 min-w-8 items-center justify-center rounded-md border px-2 text-sm transition-colors"
+      className="inline-flex h-8 min-w-8 items-center justify-center rounded-md border border-border-muted px-2 text-sm text-fg-default transition-colors hover:bg-neutral-muted"
     >
       {page}
     </Link>
@@ -115,7 +99,7 @@ function NavLink({
       <span
         aria-disabled="true"
         aria-label={ariaLabel}
-        className="border-border-muted text-fg-subtle inline-flex h-8 cursor-not-allowed items-center gap-1 rounded-md border px-3 text-sm"
+        className="inline-flex h-8 cursor-not-allowed items-center gap-1 rounded-md border border-border-muted px-3 text-sm text-fg-subtle"
       >
         {children}
       </span>
@@ -125,7 +109,7 @@ function NavLink({
     <Link
       href={href}
       aria-label={ariaLabel}
-      className="border-border-muted text-fg-default hover:bg-neutral-muted inline-flex h-8 items-center gap-1 rounded-md border px-3 text-sm transition-colors"
+      className="inline-flex h-8 items-center gap-1 rounded-md border border-border-muted px-3 text-sm text-fg-default transition-colors hover:bg-neutral-muted"
     >
       {children}
     </Link>

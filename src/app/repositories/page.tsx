@@ -1,10 +1,9 @@
+import { RateLimitError } from "@/features/repositories/data/errors";
 import { searchRepositories } from "@/features/repositories/data/search-repositories";
-import {
-  calculateTotalPages,
-  parseSearchQuery,
-} from "@/features/repositories/domain/search-query";
+import { calculateTotalPages, parseSearchQuery } from "@/features/repositories/domain/search-query";
 import { EmptyState } from "@/features/repositories/ui/empty-state";
 import { Pagination } from "@/features/repositories/ui/pagination";
+import { RateLimitNotice } from "@/features/repositories/ui/rate-limit-notice";
 import { RepositoryList } from "@/features/repositories/ui/repository-list";
 
 /**
@@ -28,7 +27,25 @@ export default async function Page(props: PageProps<"/repositories">) {
     return <EmptyState mode="initial" />;
   }
 
-  const result = await searchRepositories(query);
+  // レート制限はユーザに「あと何分で再試行できる」を提示したいため、
+  // ここで catch して専用 UI に流す。それ以外の例外は error.tsx に伝播させる。
+  let result;
+  try {
+    result = await searchRepositories(query);
+  } catch (error) {
+    if (error instanceof RateLimitError) {
+      // Server Component は 1 リクエストごとに 1 回しか走らないため
+      // Date.now() を「描画関数で呼ぶこと」自体は不安定さを生まない。
+      // react-hooks/purity の警告は CSR を想定したもので、ここでは無効化する。
+      // eslint-disable-next-line react-hooks/purity -- Server Component, request scoped
+      const now = Date.now();
+      const minutesUntilReset = error.resetAt
+        ? Math.max(0, Math.ceil((error.resetAt.getTime() - now) / 60_000))
+        : null;
+      return <RateLimitNotice minutesUntilReset={minutesUntilReset} />;
+    }
+    throw error;
+  }
 
   if (result.totalCount === 0) {
     return <EmptyState mode="not-found" query={query.q} />;
