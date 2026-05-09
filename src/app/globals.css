@@ -1,26 +1,88 @@
 @import "tailwindcss";
 
+/*
+ * Tailwind v4 の class-based dark mode を有効化する。
+ * next-themes が <html> に `dark` クラスを付け外しすることで切り替わる。
+ * `:where(...)` で specificity を 0 にしているので、ユーティリティの上書きを邪魔しない。
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * GitHub Primer Design System の色トークンを写経し、
+ * @theme inline でそれを参照する。
+ *   - 1 つの CSS 変数を上書きするだけで light/dark が切り替わる
+ *   - Tailwind の bg-canvas-default 等のユーティリティが自動追従する
+ * という構成になる。
+ * 出典: https://primer.style/foundations/primitives/color
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --canvas-default: #ffffff;
+  --canvas-subtle: #f6f8fa;
+  --canvas-inset: #f6f8fa;
+  --canvas-overlay: #ffffff;
+  --fg-default: #1f2328;
+  --fg-muted: #59636e;
+  --fg-subtle: #6e7781;
+  --fg-on-emphasis: #ffffff;
+  --border-default: #d1d9e0;
+  --border-muted: #d8dee4;
+  --accent-fg: #0969da;
+  --accent-emphasis: #0969da;
+  --accent-subtle: #ddf4ff;
+  --success-fg: #1a7f37;
+  --attention-fg: #9a6700;
+  --danger-fg: #d1242f;
+  --danger-subtle: #ffebe9;
+  --neutral-emphasis: #59636e;
+  --neutral-muted: #afb8c133;
+  --neutral-subtle: #818b981f;
+}
+
+.dark {
+  --canvas-default: #0d1117;
+  --canvas-subtle: #151b23;
+  --canvas-inset: #010409;
+  --canvas-overlay: #151b23;
+  --fg-default: #f0f6fc;
+  --fg-muted: #9198a1;
+  --fg-subtle: #6e7681;
+  --fg-on-emphasis: #ffffff;
+  --border-default: #3d444d;
+  --border-muted: #3d444d80;
+  --accent-fg: #4493f8;
+  --accent-emphasis: #1f6feb;
+  --accent-subtle: #1f6feb1a;
+  --success-fg: #3fb950;
+  --attention-fg: #d29922;
+  --danger-fg: #f85149;
+  --danger-subtle: #f851491a;
+  --neutral-emphasis: #9198a1;
+  --neutral-muted: #6e768166;
+  --neutral-subtle: #6e768133;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-canvas-default: var(--canvas-default);
+  --color-canvas-subtle: var(--canvas-subtle);
+  --color-canvas-inset: var(--canvas-inset);
+  --color-canvas-overlay: var(--canvas-overlay);
+  --color-fg-default: var(--fg-default);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-fg-on-emphasis: var(--fg-on-emphasis);
+  --color-border-default: var(--border-default);
+  --color-border-muted: var(--border-muted);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-emphasis: var(--accent-emphasis);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-success-fg: var(--success-fg);
+  --color-attention-fg: var(--attention-fg);
+  --color-danger-fg: var(--danger-fg);
+  --color-danger-subtle: var(--danger-subtle);
+  --color-neutral-emphasis: var(--neutral-emphasis);
+  --color-neutral-muted: var(--neutral-muted);
+  --color-neutral-subtle: var(--neutral-subtle);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
