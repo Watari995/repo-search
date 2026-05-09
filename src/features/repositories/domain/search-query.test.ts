@@ -8,12 +8,7 @@
  * ユーザ操作ですぐ顕在化する問題を生むため重点的に守る。
  */
 import { describe, expect, it } from "vitest";
-import {
-  MAX_PAGE,
-  PER_PAGE,
-  calculateTotalPages,
-  parseSearchQuery,
-} from "./search-query";
+import { MAX_PAGE, PER_PAGE, calculateTotalPages, parseSearchQuery } from "./search-query";
 
 describe("parseSearchQuery", () => {
   it("空のクエリは isEmpty: true で短絡する", () => {

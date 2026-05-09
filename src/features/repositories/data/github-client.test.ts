@@ -29,9 +29,7 @@ const apiUrl = "https://api.github.com/test";
 
 describe("githubFetch", () => {
   it("200 OK のレスポンスを JSON としてパースして返す", async () => {
-    server.use(
-      http.get(apiUrl, () => HttpResponse.json({ ok: true, value: 42 })),
-    );
+    server.use(http.get(apiUrl, () => HttpResponse.json({ ok: true, value: 42 })));
 
     await expect(githubFetch<{ ok: boolean; value: number }>("/test")).resolves.toEqual({
       ok: true,
