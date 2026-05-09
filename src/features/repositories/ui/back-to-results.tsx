@@ -32,7 +32,7 @@ export function BackToResults() {
     <Link
       href="/repositories"
       onClick={handleClick}
-      className="text-fg-muted hover:text-accent-fg inline-flex w-fit items-center gap-1 text-sm transition-colors"
+      className="inline-flex w-fit items-center gap-1 text-sm text-fg-muted transition-colors hover:text-accent-fg"
     >
       <ArrowLeftIcon size={14} aria-hidden />
       Back to results
