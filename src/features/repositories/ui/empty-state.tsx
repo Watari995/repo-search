@@ -8,9 +8,7 @@ import { SearchIcon } from "@primer/octicons-react";
  * モードを props で切り替えるのは、配置場所と装飾を共通化したいため。
  * UI のテキストは GitHub の「No results matched your search」に近いトーン。
  */
-type Props =
-  | { mode: "initial" }
-  | { mode: "not-found"; query: string };
+type Props = { mode: "initial" } | { mode: "not-found"; query: string };
 
 export function EmptyState(props: Props) {
   const heading = props.mode === "initial" ? "Search GitHub repositories" : "No repositories found";
@@ -20,10 +18,10 @@ export function EmptyState(props: Props) {
       : `Your search "${props.query}" did not match any repositories.`;
 
   return (
-    <div className="border-border-muted bg-canvas-subtle/40 flex flex-col items-center gap-2 rounded-md border border-dashed py-16 text-center">
+    <div className="flex flex-col items-center gap-2 rounded-md border border-dashed border-border-muted bg-canvas-subtle/40 py-16 text-center">
       <SearchIcon size={32} className="text-fg-subtle" aria-hidden />
-      <h2 className="text-fg-default text-base font-semibold">{heading}</h2>
-      <p className="text-fg-muted max-w-sm text-sm">{description}</p>
+      <h2 className="text-base font-semibold text-fg-default">{heading}</h2>
+      <p className="max-w-sm text-sm text-fg-muted">{description}</p>
     </div>
   );
 }

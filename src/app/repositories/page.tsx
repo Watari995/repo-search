@@ -1,6 +1,10 @@
 import { searchRepositories } from "@/features/repositories/data/search-repositories";
-import { parseSearchQuery } from "@/features/repositories/domain/search-query";
+import {
+  calculateTotalPages,
+  parseSearchQuery,
+} from "@/features/repositories/domain/search-query";
 import { EmptyState } from "@/features/repositories/ui/empty-state";
+import { Pagination } from "@/features/repositories/ui/pagination";
 import { RepositoryList } from "@/features/repositories/ui/repository-list";
 
 /**
@@ -30,12 +34,15 @@ export default async function Page(props: PageProps<"/repositories">) {
     return <EmptyState mode="not-found" query={query.q} />;
   }
 
+  const totalPages = calculateTotalPages(result.totalCount);
+
   return (
     <section className="flex flex-col gap-4">
-      <p className="text-fg-muted text-sm" aria-live="polite">
+      <p className="text-sm text-fg-muted" aria-live="polite">
         {result.totalCount.toLocaleString("en-US")} repository results
       </p>
       <RepositoryList items={result.items} />
+      <Pagination currentPage={query.page} totalPages={totalPages} q={query.q} />
     </section>
   );
 }

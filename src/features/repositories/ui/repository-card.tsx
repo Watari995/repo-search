@@ -15,33 +15,33 @@ import type { Repository } from "../domain/repository";
  */
 export function RepositoryCard({ repo }: { repo: Repository }) {
   return (
-    <article className="border-border-muted hover:border-accent-emphasis bg-canvas-default group rounded-md border p-4 transition-colors">
+    <article className="group rounded-md border border-border-muted bg-canvas-default p-4 transition-colors hover:border-accent-emphasis">
       <div className="flex items-start gap-3">
         <Image
           src={repo.owner.avatarUrl}
           alt=""
           width={40}
           height={40}
-          className="border-border-muted rounded-full border"
+          className="rounded-full border border-border-muted"
         />
         <div className="min-w-0 flex-1">
-          <h2 className="text-base font-semibold leading-tight">
+          <h2 className="text-base leading-tight font-semibold">
             <Link
               href={`/repositories/${repo.owner.login}/${repo.name}`}
               className="text-accent-fg hover:underline"
             >
-              <span className="text-fg-muted font-normal">{repo.owner.login}/</span>
+              <span className="font-normal text-fg-muted">{repo.owner.login}/</span>
               <span>{repo.name}</span>
             </Link>
           </h2>
           {repo.description && (
-            <p className="text-fg-muted mt-1 line-clamp-2 text-sm">{repo.description}</p>
+            <p className="mt-1 line-clamp-2 text-sm text-fg-muted">{repo.description}</p>
           )}
-          <dl className="text-fg-muted mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
+          <dl className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-fg-muted">
             {repo.language && (
               <div className="inline-flex items-center gap-1">
                 <span
-                  className="bg-accent-emphasis inline-block h-3 w-3 rounded-full"
+                  className="inline-block h-3 w-3 rounded-full bg-accent-emphasis"
                   aria-hidden
                 />
                 <dt className="sr-only">Language</dt>
