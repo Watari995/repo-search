@@ -23,14 +23,14 @@ import type { Repository } from "../domain/repository";
  */
 export function RepositoryCard({ repo }: { repo: Repository }) {
   return (
-    <article className="group bg-canvas-default border-border-muted hover:border-accent-emphasis has-focus-visible:border-accent-emphasis has-focus-visible:ring-accent-fg/40 relative rounded-md border p-4 transition-colors has-focus-visible:ring-2">
+    <article className="group relative rounded-md border border-border-muted bg-canvas-default p-4 transition-colors hover:border-accent-emphasis has-focus-visible:border-accent-emphasis has-focus-visible:ring-2 has-focus-visible:ring-accent-fg/40">
       <div className="flex items-start gap-3">
         <Image
           src={repo.owner.avatarUrl}
           alt=""
           width={40}
           height={40}
-          className="border-border-muted rounded-full border"
+          className="rounded-full border border-border-muted"
         />
         <div className="min-w-0 flex-1">
           <h2 className="text-base leading-tight font-semibold">
@@ -39,16 +39,16 @@ export function RepositoryCard({ repo }: { repo: Repository }) {
               // after:* で <a> の擬似要素をカード全体に広げ、クリック範囲を拡張する。
               // outline-none + has-focus-visible:ring (article 側) で focus visual を
               // カード全体に出すことで、Tab キーの目印を見やすくしている。
-              className="text-accent-fg group-hover:underline focus:outline-none after:absolute after:inset-0 after:content-['']"
+              className="text-accent-fg group-hover:underline after:absolute after:inset-0 after:content-[''] focus:outline-none"
             >
-              <span className="text-fg-muted font-normal">{repo.owner.login}/</span>
+              <span className="font-normal text-fg-muted">{repo.owner.login}/</span>
               <span>{repo.name}</span>
             </Link>
           </h2>
           {repo.description && (
-            <p className="text-fg-muted mt-1 line-clamp-2 text-sm">{repo.description}</p>
+            <p className="mt-1 line-clamp-2 text-sm text-fg-muted">{repo.description}</p>
           )}
-          <dl className="text-fg-muted mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
+          <dl className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-fg-muted">
             {repo.language && (
               <div className="inline-flex items-center gap-1">
                 <span

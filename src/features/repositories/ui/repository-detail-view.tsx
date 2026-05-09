@@ -38,7 +38,7 @@ export function RepositoryDetailView({ detail }: { detail: RepositoryDetail }) {
             <span>{detail.name}</span>
           </h1>
           {detail.language && (
-            <p className="text-fg-muted mt-1 inline-flex items-center gap-1.5 text-sm">
+            <p className="mt-1 inline-flex items-center gap-1.5 text-sm text-fg-muted">
               <span
                 className="inline-block h-3 w-3 rounded-full"
                 style={{ backgroundColor: getLanguageColor(detail.language) }}
