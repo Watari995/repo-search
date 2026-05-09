@@ -55,12 +55,12 @@ pnpm dev
 
 ### 環境変数
 
-| 変数 | 必須? | 用途 |
-|---|---|---|
-| `BASIC_AUTH_USER` | 任意 | Basic Auth のユーザ名。両方揃った場合のみ認証ゲートが有効化 |
-| `BASIC_AUTH_PASSWORD` | 任意 | Basic Auth のパスワード (8 文字以上) |
-| `GITHUB_TOKEN` | 推奨 | API レート制限を 60→5000 req/h に緩和。スコープは無印 or `public_repo` で十分 |
-| `NEXT_PUBLIC_SITE_URL` | 任意 | 動的 OGP の絶対 URL 解決用。Vercel では本番 URL を設定 |
+| 変数                   | 必須? | 用途                                                                          |
+| ---------------------- | ----- | ----------------------------------------------------------------------------- |
+| `BASIC_AUTH_USER`      | 任意  | Basic Auth のユーザ名。両方揃った場合のみ認証ゲートが有効化                   |
+| `BASIC_AUTH_PASSWORD`  | 任意  | Basic Auth のパスワード (8 文字以上)                                          |
+| `GITHUB_TOKEN`         | 推奨  | API レート制限を 60→5000 req/h に緩和。スコープは無印 or `public_repo` で十分 |
+| `NEXT_PUBLIC_SITE_URL` | 任意  | 動的 OGP の絶対 URL 解決用。Vercel では本番 URL を設定                        |
 
 `.env.local` は gitignore 済み。空文字 (`""`) は **未設定** と同じ扱いです。
 
@@ -178,14 +178,14 @@ URL の `?q=...&page=...` を Single Source of Truth として、`searchParams` 
 
 ### 3. **状態管理ライブラリゼロ**
 
-| 状態種別 | 配置先 |
-|---|---|
-| 検索クエリ・ページ番号 | URL `searchParams` |
-| 検索結果データ | Server Component の fetch 戻り値 (props) |
-| ローディング | `loading.tsx` + Suspense |
-| エラー | `error.tsx` (error boundary) |
-| 検索バーの一時入力 | コンポーネントローカル `useState` |
-| テーマ (dark/light) | `next-themes` (cookie/localStorage) |
+| 状態種別               | 配置先                                   |
+| ---------------------- | ---------------------------------------- |
+| 検索クエリ・ページ番号 | URL `searchParams`                       |
+| 検索結果データ         | Server Component の fetch 戻り値 (props) |
+| ローディング           | `loading.tsx` + Suspense                 |
+| エラー                 | `error.tsx` (error boundary)             |
+| 検索バーの一時入力     | コンポーネントローカル `useState`        |
+| テーマ (dark/light)    | `next-themes` (cookie/localStorage)      |
 
 「サーバから来るデータをクライアント状態にコピーしない」が原則です。
 
@@ -223,20 +223,20 @@ test: 詳細ページのデータ整形テスト (watcher 数の罠を含む)
 
 ## Next.js v16 で活用した機能
 
-| 機能 | 利用箇所 | 採用意図 (コード内コメントにも明記) |
-|---|---|---|
-| Server Components | 全ページ既定 | API キー保護、JS バンドル削減、TTFB 改善 |
-| `<Suspense>` + Streaming | 結果リスト | ヘッダ・検索バーは即時、結果のみ流れて差し替え |
-| `loading.tsx` / `error.tsx` | 各ルート | Skeleton と局所エラー処理 |
-| `generateMetadata` | 詳細ページ | 動的 OGP (Twitter Card 含む) |
-| `<Image>` (avatar) | 一覧・詳細 | WebP 自動変換、LCP 改善 |
-| `<Link>` prefetch | 一覧 → 詳細 | viewport 内 Link を自動 prefetch で即遷移 |
-| `next/font` (Inter / JetBrains Mono) | layout | self-host で CLS 防止 |
-| `fetch` + `revalidate` | API クライアント | 検索 60s / 詳細 300s で ISR 的キャッシュ |
-| async `searchParams` | 一覧ページ | URL = State 基盤 (v15+ から Promise に変わった点) |
-| `import "server-only"` | github-client | 誤クライアント import を build 時に弾く |
-| **`proxy.ts`** (旧 middleware) | 認証ゲート | v16 で middleware は deprecated → proxy に renamed |
-| `<Image>` の `remotePatterns` | next.config.ts | v16 で `domains` は廃止 |
+| 機能                                 | 利用箇所         | 採用意図 (コード内コメントにも明記)                |
+| ------------------------------------ | ---------------- | -------------------------------------------------- |
+| Server Components                    | 全ページ既定     | API キー保護、JS バンドル削減、TTFB 改善           |
+| `<Suspense>` + Streaming             | 結果リスト       | ヘッダ・検索バーは即時、結果のみ流れて差し替え     |
+| `loading.tsx` / `error.tsx`          | 各ルート         | Skeleton と局所エラー処理                          |
+| `generateMetadata`                   | 詳細ページ       | 動的 OGP (Twitter Card 含む)                       |
+| `<Image>` (avatar)                   | 一覧・詳細       | WebP 自動変換、LCP 改善                            |
+| `<Link>` prefetch                    | 一覧 → 詳細      | viewport 内 Link を自動 prefetch で即遷移          |
+| `next/font` (Inter / JetBrains Mono) | layout           | self-host で CLS 防止                              |
+| `fetch` + `revalidate`               | API クライアント | 検索 60s / 詳細 300s で ISR 的キャッシュ           |
+| async `searchParams`                 | 一覧ページ       | URL = State 基盤 (v15+ から Promise に変わった点)  |
+| `import "server-only"`               | github-client    | 誤クライアント import を build 時に弾く            |
+| **`proxy.ts`** (旧 middleware)       | 認証ゲート       | v16 で middleware は deprecated → proxy に renamed |
+| `<Image>` の `remotePatterns`        | next.config.ts   | v16 で `domains` は廃止                            |
 
 意図的に **使わなかった** もの:
 
@@ -283,14 +283,14 @@ curl https://<your-domain>/api/health
 
 ## 既知の限界と本番化指針
 
-| 項目 | 現状 | 本番化するなら |
-|---|---|---|
-| 認証 | Basic Auth (平文 base64) | NextAuth.js + IdP (Google / GitHub OAuth)、レートリミット付き |
-| レート制限 | `GITHUB_TOKEN` で 5000 req/h | Vercel KV や Edge Config で API レイヤキャッシュ + ユーザ単位 quota |
-| エラー監視 | `console.error` + Next.js デフォルト | Sentry / Datadog 等にエラーと digest を送信 |
-| 国際化 | 英語 UI (GitHub 踏襲) + 日本語コメント | next-intl + 翻訳キー化 |
-| アクセシビリティ | aria-label / role / focus-visible 程度 | axe-core を CI に挟む、コントラスト精査 |
-| セキュリティ | Basic Auth + `import 'server-only'` | CSP / X-Frame-Options ヘッダの明示、Token rotation |
+| 項目             | 現状                                   | 本番化するなら                                                      |
+| ---------------- | -------------------------------------- | ------------------------------------------------------------------- |
+| 認証             | Basic Auth (平文 base64)               | NextAuth.js + IdP (Google / GitHub OAuth)、レートリミット付き       |
+| レート制限       | `GITHUB_TOKEN` で 5000 req/h           | Vercel KV や Edge Config で API レイヤキャッシュ + ユーザ単位 quota |
+| エラー監視       | `console.error` + Next.js デフォルト   | Sentry / Datadog 等にエラーと digest を送信                         |
+| 国際化           | 英語 UI (GitHub 踏襲) + 日本語コメント | next-intl + 翻訳キー化                                              |
+| アクセシビリティ | aria-label / role / focus-visible 程度 | axe-core を CI に挟む、コントラスト精査                             |
+| セキュリティ     | Basic Auth + `import 'server-only'`    | CSP / X-Frame-Options ヘッダの明示、Token rotation                  |
 
 ---
 
