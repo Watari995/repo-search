@@ -7,7 +7,7 @@ export default function Home() {
     <main className="flex min-h-svh items-center justify-center p-8">
       <div className="text-center">
         <h1 className="text-3xl font-semibold">repo-search</h1>
-        <p className="text-fg-muted mt-2 text-sm">セットアップ中…</p>
+        <p className="mt-2 text-sm text-fg-muted">セットアップ中…</p>
       </div>
     </main>
   );

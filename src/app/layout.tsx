@@ -33,14 +33,10 @@ export const metadata: Metadata = {
     template: "%s · repo-search",
   },
   description: "Search GitHub repositories with a Next.js 16 App Router demo.",
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  ),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   // next-themes が hydration 時に <html> へクラスを差し込むため
   // mismatch 警告を抑制する。これは公式が推奨するパターン。
   return (
@@ -49,7 +45,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="bg-canvas-default text-fg-default flex min-h-svh flex-col font-sans">
+      <body className="flex min-h-svh flex-col bg-canvas-default font-sans text-fg-default">
         {children}
       </body>
     </html>
