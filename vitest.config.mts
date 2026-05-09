@@ -17,7 +17,9 @@ import { fileURLToPath } from "node:url";
 export default defineConfig({
   plugins: [react()],
   test: {
-    environment: "jsdom",
+    // happy-dom は jsdom より軽量で Node 24 との互換性も良い。
+    // RTL は両方サポートする。
+    environment: "happy-dom",
     globals: true,
     setupFiles: ["./tests/setup.ts"],
     css: false,
@@ -35,8 +37,18 @@ export default defineConfig({
     },
   },
   resolve: {
-    alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
-    },
+    alias: [
+      // `server-only` の default は throw するため、Vitest ではスタブに置換する。
+      // production ビルドでは Server Components の `react-server` 条件で
+      // empty.js が選ばれるため問題ない。
+      {
+        find: "server-only",
+        replacement: fileURLToPath(new URL("./tests/server-only-stub.js", import.meta.url)),
+      },
+      {
+        find: "@",
+        replacement: fileURLToPath(new URL("./src", import.meta.url)),
+      },
+    ],
   },
 });

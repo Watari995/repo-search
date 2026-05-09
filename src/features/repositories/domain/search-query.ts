@@ -19,9 +19,7 @@ export const MAX_RESULTS = 1000;
 /** 上限に対応する最大ページ番号。 */
 export const MAX_PAGE = Math.floor(MAX_RESULTS / PER_PAGE);
 
-export type SearchQuery =
-  | { isEmpty: true }
-  | { isEmpty: false; q: string; page: number };
+export type SearchQuery = { isEmpty: true } | { isEmpty: false; q: string; page: number };
 
 export type SearchParamsLike = {
   q?: string | string[];
